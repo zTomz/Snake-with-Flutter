@@ -79,7 +79,7 @@ class _GamePageState extends State<GamePage> {
           Position(x: 6, y: 10),
           Position(x: 5, y: 10),
         ];
-        moveDirection = "TOP";
+        moveDirection = "RIGHT";
         runs += 1;
       });
     }
@@ -96,7 +96,7 @@ class _GamePageState extends State<GamePage> {
             Position(x: 6, y: 10),
             Position(x: 5, y: 10),
           ];
-          moveDirection = "TOP";
+          moveDirection = "RIGHT";
           runs += 1;
         });
       }
@@ -184,18 +184,21 @@ class _GamePageState extends State<GamePage> {
             ),
             const SizedBox(height: 50),
             GestureDetector(
-              onPanUpdate: (DragUpdateDetails details) {
-                if (details.delta.dx > 0) {
-                  moveDirection = "RIGHT";
-                }
-                if (details.delta.dx < 0) {
+              onHorizontalDragEnd: (details) {
+                if (details.velocity.pixelsPerSecond.dx < 0) {
                   moveDirection = "LEFT";
                 }
-                if (details.delta.dy > 0) {
-                  moveDirection = "BOTTOM";
+                if (details.velocity.pixelsPerSecond.dx > 0) {
+                  moveDirection = "RIGHT";
                 }
-                if (details.delta.dy < 0) {
+              },
+              onVerticalDragEnd: (details) {
+                print(details.velocity.pixelsPerSecond);
+                if (details.velocity.pixelsPerSecond.dy < 0) {
                   moveDirection = "TOP";
+                }
+                if (details.velocity.pixelsPerSecond.dy >= 0) {
+                  moveDirection = "BOTTOM";
                 }
               },
               child: Container(
@@ -232,7 +235,7 @@ class _GamePageState extends State<GamePage> {
                           Position(x: 6, y: 10),
                           Position(x: 5, y: 10),
                         ];
-                        moveDirection = "TOP";
+                        moveDirection = "RIGHT";
                         runs = 1;
                       });
                       createNewApple();
