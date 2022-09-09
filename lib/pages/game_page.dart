@@ -185,16 +185,16 @@ class _GamePageState extends State<GamePage> {
             const SizedBox(height: 50),
             GestureDetector(
               onPanUpdate: (DragUpdateDetails details) {
-                if (details.delta.dx > 0 && moveDirection != "LEFT") {
+                if (details.delta.dx > 0) {
                   moveDirection = "RIGHT";
                 }
-                if (details.delta.dx < 0 && moveDirection != "RIGHT") {
+                if (details.delta.dx < 0) {
                   moveDirection = "LEFT";
                 }
-                if (details.delta.dy > 0 && moveDirection != "TOP") {
+                if (details.delta.dy > 0) {
                   moveDirection = "BOTTOM";
                 }
-                if (details.delta.dy < 0 && moveDirection != "BOTTOM") {
+                if (details.delta.dy < 0) {
                   moveDirection = "TOP";
                 }
               },
