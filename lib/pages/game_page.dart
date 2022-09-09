@@ -121,25 +121,27 @@ class _GamePageState extends State<GamePage> {
 
   void createNewApple() {
     bool run = true;
+    Position newPos = Position(x: 0, y: 0);
     while (run) {
-      applePosition = Position(
+      newPos = Position(
         x: Random.secure().nextInt(12),
         y: Random.secure().nextInt(20),
       );
+      run = false;
       for (Position snakePos in snakePositions) {
-        if (applePosition.x != snakePos.x && applePosition.y != snakePos.y) {
-          run = false;
+        if (newPos.x == snakePos.x && newPos.y == snakePos.y) {
+          run = true;
         }
       }
-      if (applePosition.x <= 0 ||
-          applePosition.y <= 0 ||
-          applePosition.x >= 13 ||
-          applePosition.y >= 21) {
+      if (newPos.x <= 0 ||
+          newPos.y <= 0 ||
+          newPos.x >= 13 ||
+          newPos.y >= 21) {
         run = true;
       }
     }
     setState(() {
-      applePosition = applePosition;
+      applePosition = newPos;
     });
   }
 

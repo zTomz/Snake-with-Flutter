@@ -34,26 +34,28 @@ class GamePainter extends CustomPainter {
           Radius.circular(fieldSize * 0.4),
         ),
         Paint()
-          ..color = const Color(0xFF91FF85)
+          ..color = snakePos == snakePositions[0]
+              ? const Color(0xFF35FF1F)
+              : const Color(0xFF5AFF47)
           ..strokeWidth = 2,
       );
     }
 
     canvas.drawRRect(
-        RRect.fromRectAndRadius(
-          // Snake Positions
-          Rect.fromLTRB(
-            fieldSize * (applePosition.x - 1),
-            fieldSize * (applePosition.y - 1),
-            fieldSize + fieldSize * (applePosition.x - 1),
-            fieldSize + fieldSize * (applePosition.y - 1),
-          ),
-          Radius.circular(fieldSize * 0.4),
+      RRect.fromRectAndRadius(
+        // Snake Positions
+        Rect.fromLTRB(
+          fieldSize * (applePosition.x - 1),
+          fieldSize * (applePosition.y - 1),
+          fieldSize + fieldSize * (applePosition.x - 1),
+          fieldSize + fieldSize * (applePosition.y - 1),
         ),
-        Paint()
-          ..color = Colors.red
-          ..strokeWidth = 2,
-      );
+        Radius.circular(fieldSize * 0.4),
+      ),
+      Paint()
+        ..color = Colors.red
+        ..strokeWidth = 2,
+    );
   }
 
   @override
