@@ -1,16 +1,9 @@
-# snake
+# Snake
 
-A new Flutter project.
+I created this project to test my Flutter skills and I can recommend it to everyone. It makes fun and is not to difficult to write if you know a little bit about Flutter. I am coding with Flutter for the last 4 months or so and only developed apps. This is simply something else.
 
-## Getting Started
+I think the code is today not so good. But I want to imrove it in the future.
 
-This project is a starting point for a Flutter application.
+Here a screenshot:
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+![Showcase](https://user-images.githubusercontent.com/85431690/189384137-1047b40b-8232-4a97-8165-cd9bba3e1218.png)
