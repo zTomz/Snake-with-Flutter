@@ -184,21 +184,18 @@ class _GamePageState extends State<GamePage> {
             ),
             const SizedBox(height: 50),
             GestureDetector(
-              onHorizontalDragEnd: (details) {
-                if (details.velocity.pixelsPerSecond.dx < 0) {
-                  moveDirection = "LEFT";
-                }
-                if (details.velocity.pixelsPerSecond.dx > 0) {
-                  moveDirection = "RIGHT";
-                }
-              },
-              onVerticalDragEnd: (details) {
-                print(details.velocity.pixelsPerSecond);
-                if (details.velocity.pixelsPerSecond.dy < 0) {
+              onVerticalDragUpdate: (details) {
+                if (details.delta.dy > 0 && moveDirection != "TOP") {
+                  moveDirection = "BOTTOM";
+                } else if (details.delta.dy < 0 && moveDirection != "BOTTOM") {
                   moveDirection = "TOP";
                 }
-                if (details.velocity.pixelsPerSecond.dy >= 0) {
-                  moveDirection = "BOTTOM";
+              },
+              onHorizontalDragUpdate: (details) {
+                if (details.delta.dx > 0 && moveDirection != "LEFT") {
+                  moveDirection = "RIGHT";
+                } else if (details.delta.dx < 0 && moveDirection != "RIGHT") {
+                  moveDirection = "LEFT";
                 }
               },
               child: Container(
