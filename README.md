@@ -7,3 +7,5 @@ I think the code is today not so good. But I want to imrove it in the future.
 Here a screenshot:
 
 ![Showcase](https://user-images.githubusercontent.com/85431690/189384137-1047b40b-8232-4a97-8165-cd9bba3e1218.png)
+
+To come in edit mode you have to long press the screen.

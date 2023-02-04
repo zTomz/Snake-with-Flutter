@@ -34,9 +34,7 @@ class GamePainter extends CustomPainter {
           Radius.circular(fieldSize * 0.4),
         ),
         Paint()
-          ..color = snakePos == snakePositions[0]
-              ? const Color(0xFF35FF1F)
-              : const Color(0xFF5AFF47)
+          ..color = Colors.green
           ..strokeWidth = 2,
       );
     }

@@ -17,6 +17,8 @@ class GamePage extends StatefulWidget {
 class _GamePageState extends State<GamePage> {
   Timer? timer;
 
+  bool editMode = false;
+
   @override
   void initState() {
     timer = Timer.periodic(
@@ -34,7 +36,7 @@ class _GamePageState extends State<GamePage> {
     y: Random.secure().nextInt(20),
   );
 
-  int snakeSpeed = 500;
+  int snakeSpeed = 300;
   int runs = 1;
 
   void gameLoop() {
@@ -69,18 +71,24 @@ class _GamePageState extends State<GamePage> {
       });
     }
 
-    if (snakePositions[0].x >= 13 ||
-        snakePositions[0].x <= 0 ||
-        snakePositions[0].y >= 21 ||
-        snakePositions[0].y <= 0) {
+    if (snakePositions[0].x > 12) {
       setState(() {
-        snakePositions = [
-          Position(x: 7, y: 10),
-          Position(x: 6, y: 10),
-          Position(x: 5, y: 10),
-        ];
-        moveDirection = "RIGHT";
-        runs += 1;
+        snakePositions[0].x = 1;
+      });
+    }
+    if (snakePositions[0].x < 1) {
+      setState(() {
+        snakePositions[0].x = 12;
+      });
+    }
+    if (snakePositions[0].y < 1) {
+      setState(() {
+        snakePositions[0].y = 20;
+      });
+    }
+    if (snakePositions[0].y > 20) {
+      setState(() {
+        snakePositions[0].y = 1;
       });
     }
 
@@ -133,10 +141,7 @@ class _GamePageState extends State<GamePage> {
           run = true;
         }
       }
-      if (newPos.x <= 0 ||
-          newPos.y <= 0 ||
-          newPos.x >= 13 ||
-          newPos.y >= 21) {
+      if (newPos.x <= 0 || newPos.y <= 0 || newPos.x >= 13 || newPos.y >= 21) {
         run = true;
       }
     }
@@ -186,6 +191,11 @@ class _GamePageState extends State<GamePage> {
             ),
             const SizedBox(height: 50),
             GestureDetector(
+              onLongPress: () {
+                setState(() {
+                  editMode = true;
+                });
+              },
               onVerticalDragUpdate: (details) {
                 if (details.delta.dy > 0 && moveDirection != "TOP") {
                   moveDirection = "BOTTOM";
@@ -200,68 +210,110 @@ class _GamePageState extends State<GamePage> {
                   moveDirection = "LEFT";
                 }
               },
-              child: Container(
-                width: 300,
-                height: 500,
-                decoration: BoxDecoration(
-                  color: BLUE,
-                  border: Border.all(
-                    strokeAlign: StrokeAlign.outside,
-                    color: Colors.black,
-                    width: 10,
+              child: RawKeyboardListener(
+                focusNode: FocusNode(),
+                onKey: (event) {
+                  if (event.data.logicalKey.debugName == "Key D" &&
+                      moveDirection != "RIGHT") {
+                    moveDirection = "RIGHT";
+                  }
+                  if (event.data.logicalKey.debugName == "Key A" &&
+                      moveDirection != "LEFT") {
+                    moveDirection = "LEFT";
+                  }
+                  if (event.data.logicalKey.debugName == "Key S" &&
+                      moveDirection != "BOTTOM") {
+                    moveDirection = "BOTTOM";
+                  }
+                  if (event.data.logicalKey.debugName == "Key W" &&
+                      moveDirection != "TOP") {
+                    moveDirection = "TOP";
+                  }
+                },
+                child: Container(
+                  width: 300,
+                  height: 500,
+                  decoration: BoxDecoration(
+                    color: BLUE,
+                    border: Border.all(
+                      strokeAlign: BorderSide.strokeAlignOutside,
+                      color: Colors.black,
+                      width: 10,
+                    ),
+                    borderRadius: BorderRadius.circular(5),
                   ),
-                  borderRadius: BorderRadius.circular(5),
-                ),
-                child: CustomPaint(
-                  painter: GamePainter(
-                    snakePositions: snakePositions,
-                    applePosition: applePosition,
+                  child: CustomPaint(
+                    painter: GamePainter(
+                      snakePositions: snakePositions,
+                      applePosition: applePosition,
+                    ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 20),
-            SizedBox(
-              width: 300,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+            if (editMode == true)
+              Column(
+                mainAxisSize: MainAxisSize.min,
                 children: [
-                  TextButton.icon(
-                    onPressed: () {
-                      setState(() {
-                        snakePositions = [
-                          Position(x: 7, y: 10),
-                          Position(x: 6, y: 10),
-                          Position(x: 5, y: 10),
-                        ];
-                        moveDirection = "RIGHT";
-                        runs = 1;
-                      });
-                      createNewApple();
-                    },
-                    icon: const Icon(Icons.update_rounded),
-                    label: const Text("Reset"),
-                  ),
-                  Slider(
-                    value: snakeSpeed.toDouble(),
-                    min: 50,
-                    max: 1000,
-                    onChanged: (newValue) {
-                      timer!.cancel();
-                      timer = Timer.periodic(
-                        Duration(milliseconds: snakeSpeed),
-                        (Timer timer) {
-                          gameLoop();
-                        },
-                      );
-                      setState(() {
-                        snakeSpeed = newValue.toInt();
-                      });
-                    },
+                  const SizedBox(height: 20),
+                  SizedBox(
+                    width: 300,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            TextButton.icon(
+                              onPressed: () {
+                                setState(() {
+                                  snakePositions = [
+                                    Position(x: 7, y: 10),
+                                    Position(x: 6, y: 10),
+                                    Position(x: 5, y: 10),
+                                  ];
+                                  moveDirection = "RIGHT";
+                                  runs = 1;
+                                });
+                                createNewApple();
+                              },
+                              icon: const Icon(Icons.update_rounded),
+                              label: const Text("Reset"),
+                            ),
+                            IconButton(
+                              tooltip: "Exit Edit-Mode",
+                              onPressed: () {
+                                setState(() {
+                                  editMode = false;
+                                });
+                              },
+                              color: Colors.yellow,
+                              icon: const Icon(Icons.exit_to_app_rounded),
+                            ),
+                          ],
+                        ),
+                        Slider(
+                          value: snakeSpeed.toDouble(),
+                          min: 50,
+                          max: 1000,
+                          onChanged: (newValue) {
+                            timer!.cancel();
+                            timer = Timer.periodic(
+                              Duration(milliseconds: snakeSpeed),
+                              (Timer timer) {
+                                gameLoop();
+                              },
+                            );
+                            setState(() {
+                              snakeSpeed = newValue.toInt();
+                            });
+                          },
+                        ),
+                      ],
+                    ),
                   ),
                 ],
               ),
-            ),
           ],
         ),
       ),
